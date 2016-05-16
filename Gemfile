@@ -16,6 +16,9 @@ gem 'ffi-geos'
 gem 'rgeo-shapefile', '~> 0.4.1'
 gem 'rgeo-geojson', '~> 0.4.3'
 
+# ActiveRecord Import
+gem 'activerecord-import', '~> 0.13.0'
+
 # Redis support
 #   http://redis.io/clients#ruby
 gem 'hiredis', '~> 0.6.1'

@@ -122,7 +122,7 @@ namespace :tw do
             main_build_loop_insects
           else
             ActiveRecord::Base.transaction do 
-              main_build_loop 
+              main_build_loop_insects
               raise
             end
           end
@@ -1021,7 +1021,7 @@ namespace :tw do
               created_at: time_from_field(created_on),
               updated_at: time_from_field(row['ModifiedOn'])
             )
-            p.parent_id = parent_index[row['Parent'].to_s].id unless row['Parent'].blank? || parent_index[row['Parent'].to_s].nil?
+            p.parent = parent_index[row['Parent'].to_s] unless row['Parent'].blank? || parent_index[row['Parent'].to_s].nil?
             if rank == 'NomenclaturalRank'
               p = Protonym.find_or_create_by(name: 'Root', rank_class: 'NomenclaturalRank', project_id: $project_id)
               parent_index.merge!(row['ID'] => p)
@@ -1033,8 +1033,7 @@ namespace :tw do
               }
 
               print "\r#{i}\t#{bench.to_s.strip}  #{name}  (Taxon code: #{row['TaxonCode']})                         " #  \t\t#{rank}
-              if p.valid?
-                p.save!
+              if p.save
                 build_otu_insects(row, p, data)
                 parent_index.merge!(row['ID'] => p)
                 data.taxa_index.merge!(row['TaxonCode'] => p)
