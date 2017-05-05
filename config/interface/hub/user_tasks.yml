@@ -223,3 +223,11 @@ dates_index_task:
   categories:
   status: prototype
   description: "Parse the collecting_events table's verbatim label for possible date combinations."
+
+otu_taxon_name_task:
+  hub: true
+  name: 'Match OTU to Taxon Name'
+  related:
+  categories:
+  status: prototype
+  description: 'Search or fuzzy match taxon names for OTUs without taxon names'

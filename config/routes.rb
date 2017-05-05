@@ -483,6 +483,14 @@ TaxonWorks::Application.routes.draw do
       end
     end
 
+    scope :otus do
+      scope :otu_to_taxon_name, controller: 'tasks/otus/otu_to_taxon_name' do
+        get 'index', as: 'otu_taxon_name_task'
+        get 'search', as: 'lookup_otu_taxon_name'
+        post 'update', as: 'update_otu'
+      end
+    end
+
     # Scopes arranged alphabetically first level below :tasks
 
     scope :accessions do

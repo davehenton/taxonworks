@@ -1,0 +1,25 @@
+<%= render("/shared/data/all/list/list_header", objects: @otus) -%>
+
+<table class="tablesorter">
+  <thead>
+  <tr>
+    <%= fancy_th_tag(name: 'OTU name') -%>
+    <%= fancy_th_tag(name: '') -%>
+    <%= fancy_th_tag(name: 'Suggested') -%>
+    <%= fancy_th_tag(name: '') -%>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @otus.each do |otu| %>
+      <%= form_tag(update_otu_url) %>
+      <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
+          <td><%= otu.name %></td>
+          <td><%= "[autocomplete]" %></td>
+          <td><%= "{radio button list}" -%></td>
+          <td><%= submit_tag(value="Update OTU") %></td>
+      <% end %>
+  <% end %>
+  </tbody>
+</table>
+
