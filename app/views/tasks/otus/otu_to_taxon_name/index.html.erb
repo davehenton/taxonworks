@@ -12,8 +12,8 @@
 
   <tbody>
   <% @otus.each do |otu| %>
-      <%= form_tag(update_otu_url) %>
       <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
+          <%= form_tag(update_otu_url) %>
           <td><%= otu.name %></td>
           <td><%= "[autocomplete]" %></td>
           <td><%= "{radio button list}" -%></td>

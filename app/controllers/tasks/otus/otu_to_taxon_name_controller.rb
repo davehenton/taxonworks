@@ -3,7 +3,7 @@ class Tasks::Otus::OtuToTaxonNameController < ApplicationController
 
   # GET
   def index
-    @otus = Otu.where('taxon_name_id IS NULL')
+    @otus = Otu.where('taxon_name_id IS NULL').page(params[:page])
   end
 
   # GET
