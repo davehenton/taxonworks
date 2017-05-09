@@ -15,7 +15,14 @@
       <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
           <%= form_tag(update_otu_url) %>
           <td><%= otu.name %></td>
-          <td><%= "[autocomplete]" %></td>
+          <td>    <%= render partial: 'workbench/elements/forms/ajax_select',
+                             locals: {controller: 'otu_to_taxon_name',
+                                      object: nil,
+                                      method: 'id',
+                                      tag_id: 'taxon_name_id_for_otu_match_form',
+                                      size: '',
+                                      display: ''} %>
+          </td>
           <td><%= "{radio button list}" -%></td>
           <td><%= submit_tag(value="Update OTU") %></td>
       <% end %>

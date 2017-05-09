@@ -488,6 +488,7 @@ TaxonWorks::Application.routes.draw do
         get 'index', as: 'otu_taxon_name_task'
         get 'search', as: 'lookup_otu_taxon_name'
         post 'update', as: 'update_otu'
+        get 'autocomplete', as: 'otu_to_taxon_name_autocomplete'
       end
     end
 
