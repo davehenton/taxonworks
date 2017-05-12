@@ -14,7 +14,7 @@ class Tasks::Otus::OtuToTaxonNameController < ApplicationController
   def update
   end
 
-  def autocomplete
+  def autocomplete # directly cloned from TaxonNamesController
     @taxon_names = Queries::TaxonNameAutocompleteQuery.new(params[:term], project_id: sessions_current_project_id).all
 
     data = @taxon_names.collect do |t|

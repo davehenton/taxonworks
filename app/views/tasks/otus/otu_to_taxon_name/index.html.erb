@@ -1,4 +1,6 @@
-<%= render("/shared/data/all/list/list_header", objects: @otus) -%>
+<div id="otu_to_taxon_name_index">
+  <h1>Task: match OTU to taxon name</h1>
+  <%= render("/shared/data/all/list/list_header", objects: @otus) -%>
 
 <table class="tablesorter">
   <thead>
@@ -14,19 +16,21 @@
   <% @otus.each do |otu| %>
       <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
           <%= form_tag(update_otu_url) %>
-          <td><%= otu.name %></td>
+          <td><a href="/otus/<%= otu.id.to_s %>"> <%= otu.name %></a></td>
           <td>    <%= render partial: 'workbench/elements/forms/ajax_select',
                              locals: {controller: 'otu_to_taxon_name',
-                                      object: nil,
+                                      object: '',
                                       method: 'id',
                                       tag_id: 'taxon_name_id_for_otu_match_form',
                                       size: '',
+                                      placeholder: 'Select a taxon name',
                                       display: ''} %>
           </td>
-          <td><%= "{radio button list}" -%></td>
+          <td><span id="<%= otu.name + '_' + otu.id.to_s %>" class="chkbox"></span></td>
           <td><%= submit_tag(value="Update OTU") %></td>
       <% end %>
   <% end %>
   </tbody>
 </table>
 
+</div>
