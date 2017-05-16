@@ -12,24 +12,16 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
 
     var start_next = 0;
     // TW.views.tasks.otus.otu_to_taxon_name.bind_radio_buttons();
-
-    $('#lat_long_convert').click(function (event) {
-        // $("#select_area").mx_spinner('show');
-        $.get('convert', $("#lat_long_convert_form").serialize(), function (local_data) {
-            var popcorn = local_data;
-            $("#dd_latitude").val(local_data.lat_piece);
-            $("#dd_longitude").val(local_data.long_piece);
-            // $("#select_area").mx_spinner('hide');
-          }, 'json'  // I expect a json response
-        );
-        event.preventDefault();
-      }
-    );
-
-    $('.mx-autocomplete').autocomplete(function () {    // on selection, construct or append to checkbox list in <span>
-        var span_id = $(this).parent().parent('.extract_row').children('.chkbox').id();
-      }
-    );
+    $('.mx-autocomplete').each(function (event) {
+      $('.mx-autocomplete', 0).autocomplete({    // on selection, construct or append to checkbox list in <span>
+        select: function () {
+          var selected_name = 'PlaceholderName';
+          var span_id = $(this).parent().parent().children('td').children('span')[0].id;
+          // $('#' + span_id).html(span_id);
+          TW.views.tasks.otus.otu_to_taxon_name.insertOrAppendRBL($('#' + span_id), selected_name, span_id);
+        }
+      });
+    });
 
     // $('#skip').click(function (event) {
     //   event.preventDefault();
@@ -52,6 +44,14 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
     //   $.post('update', $("#lat_long_convert_form").serialize() + "&" + $("#gen_georef_box").serialize());
     //  })
   },
+
+  insertOrAppendRBL: function (span_selector, name, taxon_name_id) {
+    if (!(span_selector.children('fieldset')[0])) {
+      span_selector.append('<fieldset></fieldset>');        // .tagName) != 'FIELDSET'
+    }
+    span_selector.children('fieldset')
+      .append('<input type="radio" value="' + name + '" name="' + taxon_name_id + '" /> ' + name + '<br>');
+  }
   //
   // bind_sequence_buttons: function () {
   //   var sel_all = $('#select_all');

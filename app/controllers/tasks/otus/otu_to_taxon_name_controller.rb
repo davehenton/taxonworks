@@ -12,6 +12,8 @@ class Tasks::Otus::OtuToTaxonNameController < ApplicationController
 
   # POST
   def update
+    myParams = params
+    stop_here = 1
   end
 
   def autocomplete # directly cloned from TaxonNamesController
