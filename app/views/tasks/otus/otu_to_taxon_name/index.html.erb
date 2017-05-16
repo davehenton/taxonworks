@@ -2,36 +2,36 @@
   <h1>Task: match OTU to taxon name</h1>
   <%= render("/shared/data/all/list/list_header", objects: @otus) -%>
 
-<table class="tablesorter">
-  <thead>
-  <tr>
-    <%= fancy_th_tag(name: 'OTU name') -%>
-    <%= fancy_th_tag(name: '') -%>
-    <%= fancy_th_tag(name: 'Suggested') -%>
-    <%= fancy_th_tag(name: '') -%>
-  </tr>
-  </thead>
+  <table class="tablesorter">
+    <thead>
+    <tr>
+      <%= fancy_th_tag(name: 'OTU name') -%>
+      <%= fancy_th_tag(name: '') -%>
+      <%= fancy_th_tag(name: 'Suggested') -%>
+      <%= fancy_th_tag(name: '') -%>
+    </tr>
+    </thead>
 
-  <tbody>
-  <% @otus.each do |otu| %>
-      <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
-          <%= form_tag(update_otu_url) do |f| -%>
-              <%= f.content_tag(:td, link_to(otu.name, "/otus/#{otu.id.to_s}")) -%>
-          <td>    <%= render partial: 'workbench/elements/forms/ajax_select',
-                             locals: {controller: 'otu_to_taxon_name',
-                                      object: '',
-                                      method: 'id',
-                                      tag_id: 'taxon_name_id_for_otu_match_form',
-                                      size: '',
-                                      placeholder: 'Select a taxon name',
-                                      display: ''} -%>
-          </td>
-              <td><span id="<%= 'otu_' + otu.id.to_s -%>" class="chkbox"></span></td>
-              <%= f.content_tag(:td, submit_tag(value="Update OTU")) -%>
-          <% end -%>
-      <% end %>
-  <% end %>
-  </tbody>
-</table>
+    <tbody>
+    <% @otus.each do |otu| %>
+        <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
+            <%= form_tag(update_otu_url) do |zz| %>
+                <%= content_tag(:td, link_to(otu.name, "/otus/#{otu.id.to_s}")) -%>
+                <td>    <%= render partial: 'workbench/elements/forms/ajax_select',
+                                   locals: {controller: 'otu_to_taxon_name',
+                                            object: '',
+                                            method: 'id',
+                                            tag_id: 'taxon_name_id_for_otu_match_form',
+                                            size: '',
+                                            placeholder: 'Select a taxon name',
+                                            display: ''} -%>
+                </td>
+                <td><span id="<%= 'otu_' + otu.id.to_s -%>" class="chkbox"></span></td>
+                <%= content_tag(:td, submit_tag(value="Update OTU")) -%>
+            <% end %>
+        <% end %>
+    <% end %>
+    </tbody>
+  </table>
 
 </div>
