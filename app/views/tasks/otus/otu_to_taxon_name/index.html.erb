@@ -15,20 +15,18 @@
     <tbody>
     <% @otus.each do |otu| %>
         <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
-            <%= form_tag(update_otu_url) do |zz| %>
-                <%= content_tag(:td, link_to(otu.name, "/otus/#{otu.id.to_s}")) -%>
-                <td>    <%= render partial: 'workbench/elements/forms/ajax_select',
-                                   locals: {controller: 'otu_to_taxon_name',
-                                            object: '',
-                                            method: 'id',
-                                            tag_id: 'taxon_name_id_for_otu_match_form',
-                                            size: '',
-                                            placeholder: 'Select a taxon name',
-                                            display: ''} -%>
-                </td>
-                <td><span id="<%= 'otu_' + otu.id.to_s -%>" class="chkbox"></span></td>
-                <%= content_tag(:td, submit_tag(value="Update OTU")) -%>
-            <% end %>
+            <%= content_tag(:td, link_to(otu.name, "/otus/#{otu.id.to_s}", {otu_id: "#{otu.id.to_s}"})) -%>
+            <td>    <%= render partial: 'workbench/elements/forms/ajax_select',
+                               locals: {controller: 'otu_to_taxon_name',
+                                        object: '',
+                                        method: 'search_id',
+                                        tag_id: 'taxon_name_id_for_otu_match_form',
+                                        size: '',
+                                        placeholder: 'Select a taxon name',
+                                        display: ''} -%>
+            </td>
+            <td><span id="<%= 'otu_' + otu.id.to_s -%>" class="chkbox"></span></td>
+            <%= content_tag(:td, submit_tag(value="Update OTU", class: "update_otu")) -%>
         <% end %>
     <% end %>
     </tbody>

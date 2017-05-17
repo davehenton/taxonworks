@@ -13,6 +13,15 @@ class Tasks::Otus::OtuToTaxonNameController < ApplicationController
   # POST
   def update
     myParams = params
+    @otu = Otu.where({id: myParams['otu_id']})
+    if !(myParams['taxon_name_id'].blank?)
+      otu_params = [{id: myParams['otu_id']}, {taxon_name_id: myParams['taxon_name_id']}]
+      if @otu.update(*otu_params)
+        flash['notice'] = "Updated OTU #{@otu.name}, id: #{@otu.id}"
+      else
+        flash['notice'] = "OTU #{@otu.name}, id: #{@otu.id} NOT updated"
+      end
+    end
     stop_here = 1
   end
 
