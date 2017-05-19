@@ -12,17 +12,18 @@ class Tasks::Otus::OtuToTaxonNameController < ApplicationController
 
   # POST
   def update
-    myParams = params
-    @otu = Otu.where({id: myParams['otu_id']})
-    if !(myParams['taxon_name_id'].blank?)
-      otu_params = [{id: myParams['otu_id']}, {taxon_name_id: myParams['taxon_name_id']}]
-      if @otu.update(*otu_params)
+    otu_params = {id: params['otu_id'], taxon_name_id: params['taxon_name_id']}
+    otu_id = params['otu_id']
+    @otu = Otu.find(otu_id)
+    if !(otu_params['taxon_name_id'].blank?)
+      if @otu.update(otu_params)
         flash['notice'] = "Updated OTU #{@otu.name}, id: #{@otu.id}"
       else
         flash['notice'] = "OTU #{@otu.name}, id: #{@otu.id} NOT updated"
       end
     end
-    stop_here = 1
+    data = {otu_id: otu_id}
+    render :json => data
   end
 
   def autocomplete # directly cloned from TaxonNamesController
@@ -42,5 +43,8 @@ class Tasks::Otus::OtuToTaxonNameController < ApplicationController
     render :json => data
   end
 
+  def otu_params_not
+    params.permit(:taxon_name_id)
+  end
 
 end

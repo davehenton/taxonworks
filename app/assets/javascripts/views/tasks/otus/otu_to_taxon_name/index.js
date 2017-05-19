@@ -30,14 +30,16 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
     });
     $('.update_otu').click(function (event) {
       event.preventDefault();
-      var this_otu = 'otu_id="' + $(this.parentNode.parentNode.children[0]).find('a').attr('otu_id');
+      var this_otu = 'otu_id=' + $(this.parentNode.parentNode.children[0]).find('a').attr('otu_id');
       var auto_select_id = $(this.parentNode.parentNode.children[1]).find('#taxon_name_id_for_otu_match_form_hidden_value');
       var chkbox_select = $(this.parentNode.parentNode.children[2]).find('fieldset');
       var query_string = this_otu + '&' + auto_select_id.serialize();
       if (chkbox_select) {
         query_string += '&' + chkbox_select.serialize();
       }
-      $.post('update', query_string);
+      $.post('update', query_string, function (data) {
+        $('#otu_' + data.otu_id).parent('td').parent('tr').find('td')[3].children[0].disabled = true;
+      });
     });
   },
 
