@@ -15,13 +15,24 @@ class Tasks::Otus::OtuToTaxonNameController < ApplicationController
     otu_params = {id: params['otu_id'], taxon_name_id: params['taxon_name_id']}
     otu_id = params['otu_id']
     @otu = Otu.find(otu_id)
-    if !(otu_params['taxon_name_id'].blank?)
+    unless (otu_params[:taxon_name_id].blank?)
       if @otu.update(otu_params)
         flash['notice'] = "Updated OTU #{@otu.name}, id: #{@otu.id}"
       else
         flash['notice'] = "OTU #{@otu.name}, id: #{@otu.id} NOT updated"
       end
+    else
+      # otu_params = {id: params['otu_id'], taxon_name_id: params['search_id']}
+      otu_params[:taxon_name_id] = params['search_id']
+      unless (otu_params[:taxon_name_id].blank?)
+        if @otu.update(otu_params) # {id: otu_id, taxon_name_id: params['search_id']})
+          flash['notice'] = "Updated OTU #{@otu.name}, id: #{@otu.id}"
+        else
+          flash['notice'] = "OTU #{@otu.name}, id: #{@otu.id} NOT updated"
+        end
+      end
     end
+
     data = {otu_id: otu_id}
     render :json => data
   end

@@ -33,3 +33,26 @@
   </table>
 
 </div>
+
+
+<% @otus.each do |o| -%>
+
+    <%= form_for(o, remote: true) do |f| -%>
+        <%= otu_tag(o) -%>
+        <%= f.hidden_field :id %>
+        <div class="field">
+          <%= f.label :taxon_name %>
+          <br>
+          <%= render partial: '/workbench/elements/forms/ajax_select',
+                     locals: {controller: '/taxon_names',
+                              object: 'otu',
+                              method: 'taxon_name_id',
+                              tag_id: "taxon_name_id_for_otu_#{o.id}",
+                              display: taxon_name_autocomplete_selected_tag(o.taxon_name),
+                              size: 20} %>
+        </div>
+
+        <%= submit_tag -%>
+    <% end %>
+    <br>
+<% end %>
