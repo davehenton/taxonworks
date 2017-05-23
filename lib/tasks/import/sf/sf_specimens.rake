@@ -5,6 +5,60 @@ namespace :tw do
       require 'logged_task'
       namespace :specimens do
 
+        desc 'time rake tw:project_import:sf_import:specimens:collection_objects user_id=1 data_directory=/Users/mbeckman/src/onedb2tw/working/'
+        LoggedTask.define :collection_objects => [:data_directory, :environment, :user_id] do |logger|
+
+          logger.info 'Building new collection objects...'
+
+          # total
+          # type (Specimen, Lot, RangedLot --  Dmitry uses lot, not ranged lot)
+          # preparation_type_id (TW integer, include SF text as data attribute?)
+          # respository_id (Dmitry manually reconciled these)
+          # buffered_collecting_event (no SF data)
+          # buffered_determinations (no SF data)
+          # buffered_other_labels (no SF data)
+          # ranged_lot_category_id
+          # collecting_event_id
+          # accessioned_at (no SF data)
+          # deaccession_reason (no SF data)
+          # deaccessioned_at (no SF data)
+          # housekeeping
+          
+          # note with SF.SpecimenID
+
+          # About total:
+          # @!attribute total
+          #   @return [Integer]
+          #   The enumerated number of things, as asserted by the person managing the record.  Different totals will default to different subclasses.  How you enumerate your collection objects is up to you.  If you want to call one chunk of coral 50 things, that's fine (total = 50), if you want to call one coral one thing (total = 1) that's fine too.  If not nil then ranged_lot_category_id must be nil.  When =1 the subclass is Specimen, when > 1 the subclass is Lot.
+
+
+          # Need count and description (gender, adult): query => sfSpecimenTypeCounts (SpecimenID, FileID, Count, SingularName)
+          # If count > 1, use lot
+          # If lot contains mixed males, females, adult, nymphs, etc., create a container (have several cases of this in tblSpecimenCounts)
+          # @data.biocuration_classes.merge!(
+          #     "Specimens" => BiocurationClass.find_or_create_by(name: "Adult", definition: 'Adult specimen', project_id: $project_id),
+          #     "Males" => BiocurationClass.find_or_create_by(name: "Male", definition: 'Male specimen', project_id: $project_id),
+          #     "Females" => BiocurationClass.find_or_create_by(name: "Female", definition: 'Female specimen', project_id: $project_id),
+          #     "Nymphs" => BiocurationClass.find_or_create_by(name: "Immature", definition: 'Immature specimen', project_id: $project_id),
+          #     "Exuvia" => BiocurationClass.find_or_create_by(name: "Exuvia", definition: 'Exuvia specimen', project_id: $project_id)
+          # )
+
+
+          import = Import.find_or_create_by(name: 'SpeciesFileData')
+          get_tw_project_id = import.get('SFFileIDToTWProjectID')
+
+
+
+
+
+
+
+          
+          end
+
+
+          #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
         desc 'time rake tw:project_import:sf_import:specimens:collecting_events user_id=1 data_directory=/Users/mbeckman/src/onedb2tw/working/'
         LoggedTask.define :collecting_events => [:data_directory, :environment, :user_id] do |logger|
 
@@ -12,6 +66,9 @@ namespace :tw do
 
           import = Import.find_or_create_by(name: 'SpeciesFileData')
           get_tw_project_id = import.get('SFFileIDToTWProjectID')
+          get_sf_geo_level4 = import.get('SFGeoLevel4')
+
+          # var = get_sf_geo_level4['lskdfj']['Name']
 
           get_tw_collecting_event_id = {} # key = sfUniqueLocColEvents.UniqueID, value = TW.collecting_event_id
 
@@ -196,7 +253,7 @@ namespace :tw do
                     end_date_day: end_date_day,
                     end_date_month: end_date_month,
                     end_date_year: end_date_year,
-                    # geographic_area: get_tw_geographic_area(row, logger),
+                    geographic_area: get_tw_geographic_area(row, logger, get_sf_geo_level4),
 
                     project_id: project_id
                     # paleobio_db_interval_id: TIME_PERIOD_MAP[row['TimePeriodID']], # TODO: Matt add attribute to CE !! rember ENVO implications
@@ -239,12 +296,12 @@ namespace :tw do
 
         # Find a TW geographic_area
         # @todo JDT HELP!
-        def get_tw_geographic_area(row, logger)
+        def get_tw_geographic_area(row, logger, sf_geo_level4_hash)
 
           tw_area = nil
           l1, l2, l3, l4 = row['Level1ID'], row['Level2ID'], row['Level3ID'], row['Level4ID']
           l1 = '' if l1 == '0'
-          l2 = '' if l2 --'-'
+          l2 = '' if l2 == '-'
           l3 = '' if l3 == '---'
           l4 = '' if l4 == '---'
           t1 = l1
@@ -284,7 +341,7 @@ namespace :tw do
         LoggedTask.define :create_sf_geo_level4_hash => [:data_directory, :environment, :user_id] do |logger|
           # Can be run independently at any time
 
-          logger.info 'Running create_sf_book_hash...'
+          logger.info 'Running create_sf_geo_level4_hash...'
 
           get_sf_geo_level4 = {} # key = unique_key (combined level3_id + level4_id), value = level3_id, level4_id, name, country_code (from tblGeoLevel4)
 
