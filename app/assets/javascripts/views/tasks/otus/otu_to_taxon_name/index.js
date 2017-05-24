@@ -19,7 +19,8 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
           var selected_id = select_auto.arguments[1].item.id;
           $(this.parentNode.parentNode.children[1])
             .find('#taxon_name_id_for_otu_match_form_hidden_value').val(selected_id.toString());
-          var span_id = $(this).parent().parent().children('td').children('span')[0].id;
+          // var span_id = $(this).parent().parent().children('td').children('span')[0].id;
+          var span_id = $(this).parent().children('span')[0].id;
           /*
            This function (below) is used in leiu of the fuzzy search from the controller (since it is undefined)
            to populate and exercize the radio button selection of taxon names

@@ -2,57 +2,54 @@
   <h1>Task: match OTU to taxon name</h1>
   <%= render("/shared/data/all/list/list_header", objects: @otus) -%>
 
-  <table class="tablesorter">
-    <thead>
-    <tr>
-      <%= fancy_th_tag(name: 'OTU name') -%>
-      <%= fancy_th_tag(name: '') -%>
-      <%= fancy_th_tag(name: 'Suggested') -%>
-      <%= fancy_th_tag(name: '') -%>
-    </tr>
-    </thead>
-
-    <tbody>
-    <% @otus.each do |otu| %>
-        <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
-            <%= content_tag(:td, link_to(otu.name, "/otus/#{otu.id.to_s}", {otu_id: "#{otu.id.to_s}"})) -%>
-            <td>    <%= render partial: 'workbench/elements/forms/ajax_select',
-                               locals: {controller: 'otu_to_taxon_name',
-                                        object: '',
-                                        method: 'search_id',
-                                        tag_id: 'taxon_name_id_for_otu_match_form',
-                                        size: '',
-                                        placeholder: 'Select a taxon name',
-                                        display: ''} -%>
-            </td>
-            <td><span id="<%= 'otu_' + otu.id.to_s -%>" class="chkbox"></span></td>
-            <%= content_tag(:td, submit_tag(value="Update OTU", class: "update_otu")) -%>
-        <% end %>
-    <% end %>
-    </tbody>
-  </table>
 
 </div>
 
 
 <% @otus.each do |o| -%>
-
+    <div class="flex-wrap-row" flex-direction="column">
     <%= form_for(o, remote: true) do |f| -%>
-        <%= otu_tag(o) -%>
+          <%= link_to(o.name, "/otus/#{o.id.to_s}", {otu_id: "#{o.id.to_s}"}) -%>
         <%= f.hidden_field :id %>
-        <div class="field">
-          <%= f.label :taxon_name %>
-          <br>
+          <%= f.label :taxon_name -%>
           <%= render partial: '/workbench/elements/forms/ajax_select',
                      locals: {controller: '/taxon_names',
                               object: 'otu',
                               method: 'taxon_name_id',
                               tag_id: "taxon_name_id_for_otu_#{o.id}",
                               display: taxon_name_autocomplete_selected_tag(o.taxon_name),
-                              size: 20} %>
-        </div>
-
-        <%= submit_tag -%>
+                              size: 20} -%>
+          <span id="<%= 'otu_' + o.id.to_s -%>" class="chkbox" width="50em"> </span>
+          <%= f.submit -%>
     <% end %>
-    <br>
+    </div>    <br>
 <% end %>
+<table class="tablesorter">
+  <thead>
+  <tr>
+    <%= fancy_th_tag(name: 'OTU name') -%>
+    <%= fancy_th_tag(name: '') -%>
+    <%= fancy_th_tag(name: 'Suggested') -%>
+    <%= fancy_th_tag(name: '') -%>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @otus.each do |otu| %>
+      <%= content_tag(:tr, class: [:contextMenuCells, :btn, 'btn-neutral']) do -%>
+          <%= content_tag(:td, link_to(otu.name, "/otus/#{otu.id.to_s}", {otu_id: "#{otu.id.to_s}"})) -%>
+          <td>    <%= render partial: 'workbench/elements/forms/ajax_select',
+                             locals: {controller: 'otu_to_taxon_name',
+                                      object: '',
+                                      method: 'search_id',
+                                      tag_id: 'taxon_name_id_for_otu_match_form',
+                                      size: '',
+                                      placeholder: 'Select a taxon name',
+                                      display: ''} -%>
+          </td>
+          <td><span id="<%= 'otu_' + otu.id.to_s -%>" class="chkbox"></span></td>
+          <%= content_tag(:td, submit_tag(value="Update OTU", class: "update_otu")) -%>
+      <% end %>
+  <% end %>
+  </tbody>
+</table>
