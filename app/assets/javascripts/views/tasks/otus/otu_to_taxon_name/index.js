@@ -42,6 +42,17 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
         $('#otu_' + data.otu_id).parent('td').parent('tr').find('td')[3].children[0].disabled = true;
       });
     });
+
+    $("[value='Update Otu']").click(function (event) {
+      var hidden_taxon_name_id = $(this.parentNode.children['otu[taxon_name_id]']);
+      var chkbox_select = $(this.parentNode.children).find('fieldset');
+      if (chkbox_select) {
+        var taxon_name_id = chkbox_select.serialize().split('=')[1];
+        if (taxon_name_id) {
+          hidden_taxon_name_id.val(taxon_name_id);
+        }
+      }
+    })
   },
 
   insertOrAppendRBL: function (span_selector, name, taxon_name_id) {
@@ -49,7 +60,7 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
       span_selector.append('<fieldset></fieldset>');        // .tagName) != 'FIELDSET'
     }
     span_selector.children('fieldset')
-      .append('<input type="radio" value="' + taxon_name_id + '" name="taxon_name_id" /> ' + name + '<br>');
+      .append('<input type="radio" value="' + taxon_name_id + '" name=taxon_name_id" /> ' + name + '<br>');
   }
 
 });     // end of Object.assign
