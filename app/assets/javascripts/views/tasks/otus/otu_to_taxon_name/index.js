@@ -29,7 +29,7 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
         }
       });
     });
-    $('.update_otu').click(function (event) {
+    $('.update_otu').click(function (event) {   // overcome by events - for previous version of non-rails form page
       event.preventDefault();
       var this_otu = 'otu_id=' + $(this.parentNode.parentNode.children[0]).find('a').attr('otu_id');
       var auto_select_id = $(this.parentNode.parentNode.children[1]).find('#taxon_name_id_for_otu_match_form_hidden_value');
@@ -46,12 +46,12 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
     $("[value='Update Otu']").click(function (event) {
       var hidden_taxon_name_id = $(this.parentNode.children['otu[taxon_name_id]']);
       var chkbox_select = $(this.parentNode.children).find('fieldset');
-      if (chkbox_select) {
-        var taxon_name_id = chkbox_select.serialize().split('=')[1];
-        if (taxon_name_id) {
-          hidden_taxon_name_id.val(taxon_name_id);
+      if (chkbox_select) {                            // if there is a radio button list
+        var taxon_name_id = chkbox_select.serialize().split('=')[1];  // try for a taxon_name_id
+        if (taxon_name_id) {                          // if there is a taxon_name_id
+          hidden_taxon_name_id.val(taxon_name_id);    // replace hidden value from autocomplete if radio button selected
         }
-      }
+      }                                               // else leave the autocomplete value
     })
   },
 

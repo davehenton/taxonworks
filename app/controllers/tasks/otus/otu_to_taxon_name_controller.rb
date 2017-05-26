@@ -54,8 +54,4 @@ class Tasks::Otus::OtuToTaxonNameController < ApplicationController
     render :json => data
   end
 
-  def otu_params_not
-    params.permit(:taxon_name_id)
-  end
-
 end
