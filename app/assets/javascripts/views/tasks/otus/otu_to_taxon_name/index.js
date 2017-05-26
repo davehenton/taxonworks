@@ -29,6 +29,7 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
         }
       });
     });
+
     $('.update_otu').click(function (event) {   // overcome by events - for previous version of non-rails form page
       event.preventDefault();
       var this_otu = 'otu_id=' + $(this.parentNode.parentNode.children[0]).find('a').attr('otu_id');
@@ -51,8 +52,10 @@ Object.assign(TW.views.tasks.otus.otu_to_taxon_name, {
         if (taxon_name_id) {                          // if there is a taxon_name_id
           hidden_taxon_name_id.val(taxon_name_id);    // replace hidden value from autocomplete if radio button selected
         }
-      }                                               // else leave the autocomplete value
-    })
+      }                    // else leave the autocomplete value
+      $(this).parent().find('input')[7].disabled = true;      // for some reason $this).disabled = true fails
+    })                                                // and also perform default submit
+
   },
 
   insertOrAppendRBL: function (span_selector, name, taxon_name_id) {
