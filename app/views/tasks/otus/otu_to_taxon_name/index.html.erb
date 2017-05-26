@@ -8,7 +8,7 @@
 
 <% @otus.each do |o| -%>
     <div class="flex-wrap-row" flex-direction="column">
-    <%= form_for(o, remote: true) do |f| -%>
+      <%= form_for(o, remote: true, format: :json) do |f| -%>
           <%= link_to(o.name, "/otus/#{o.id.to_s}", {otu_id: "#{o.id.to_s}"}) -%>
         <%= f.hidden_field :id %>
           <%= f.label :taxon_name -%>
