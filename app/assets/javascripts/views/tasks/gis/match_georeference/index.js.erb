@@ -387,6 +387,18 @@ _init_match_georeference_page_widget = function init_match_georeference_page() {
         }
       );
 
+      google.maps.event.addListener(gr_map[1], 'dragend', function (event) {
+        // Remove the last created shape if it exists.
+        if (gr_last != null) {
+          if (gr_last[0] != null) {
+            TW.vendor.lib.google.maps.draw.removeItemFromMap(gr_last[0]);
+          }
+        }
+        gr_last = [event.overlay, event.type];
+        var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+        $("#gr_geographic_item_attributes_shape").val(JSON.stringify(feature[0]));
+      });
+
       event.preventDefault();
     });
 

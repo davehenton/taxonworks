@@ -28,6 +28,20 @@ _init_drawable_map = function init_drawable_map() {
           $("#drawn_area_shape").val(JSON.stringify(feature[0]));
         }
       );
+      google.maps.event.addListener(drawable_map[1], 'set_at', function (event) {
+
+        // google.maps.event.addListener(drawable_map[0], 'dragend', function(event) {
+        //   // Remove the last created shape if it exists.
+        if (gr_last != null) {
+          if (gr_last[0] != null) {
+            TW.vendor.lib.google.maps.draw.removeItemFromMap(gr_last[0]);
+          }
+        }
+        gr_last = [event.overlay, event.type];
+        var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+        $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+        // alert(event)
+      });
     }
 
     function hideDrawableMap() {
