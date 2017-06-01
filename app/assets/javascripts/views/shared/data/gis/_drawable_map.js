@@ -26,22 +26,16 @@ _init_drawable_map = function init_drawable_map() {
           gr_last = [event.overlay, event.type];
         var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
           $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+          // now that new shape is captured and has a postable feature, add a listener
+          // on a changed or added/removed vertex (assumes only outerPath) for this shape
+          google.maps.event.addListener(gr_last[0].getPath(), 'set_at', function (event) {
+            var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+            $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+            // the shape is updated by googleMaps, so no additional treatment is necessary here
+          });
         }
       );
-      google.maps.event.addListener(drawable_map[1], 'set_at', function (event) {
 
-        // google.maps.event.addListener(drawable_map[0], 'dragend', function(event) {
-        //   // Remove the last created shape if it exists.
-        if (gr_last != null) {
-          if (gr_last[0] != null) {
-            TW.vendor.lib.google.maps.draw.removeItemFromMap(gr_last[0]);
-          }
-        }
-        gr_last = [event.overlay, event.type];
-        var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
-        $("#drawn_area_shape").val(JSON.stringify(feature[0]));
-        // alert(event)
-      });
     }
 
     function hideDrawableMap() {
