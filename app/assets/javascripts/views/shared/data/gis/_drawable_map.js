@@ -4,9 +4,10 @@ _init_drawable_map = function init_drawable_map() {
   var gr_last = null;     // last item drawn
   var drawable_map;  // intended for use to display on a map objects which know how to GeoJSON themselves
   var drawable_map_shell = $('#_drawable_map_outer');
+  var _drawable_map_form = $('#_drawable_map_form');
   if (drawable_map_shell.length) {
     //drawable_map = initializeGoogleMapWithDrawManager(_drawable_map_form);
-    //drawable_map_shell.attr('hidden', true);    
+    //drawable_map_shell.attr('hidden', true);
 
     function loadDrawableMap() {
       $("#area_selector").attr('hidden', true);         // hide the area selector
@@ -16,40 +17,40 @@ _init_drawable_map = function init_drawable_map() {
       $("[name='[geographic_area_id]']").attr('value', '');
       $("#geographic_area_id_for_by_area").prop('value', '');
       drawable_map = TW.vendor.lib.google.maps.draw.initializeGoogleMapWithDrawManager(_drawable_map_form);
-      google.maps.event.addListener(drawable_map[1], 'overlaycomplete', function (event) {
-          // Remove the last created shape if it exists.
-          if (gr_last != null) {
-            if (gr_last[0] != null) {
-              TW.vendor.lib.google.maps.draw.removeItemFromMap(gr_last[0]);
-            }
-          }
-          gr_last = [event.overlay, event.type];
-        var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
-          $("#drawn_area_shape").val(JSON.stringify(feature[0]));
-          // now that new shape is captured and has a postable feature, add a listener
-        if (gr_last[1] == 'polygon') {
-          // on a changed or added/removed vertex (assumes only outerPath) for polygon shape
-          google.maps.event.addListener(gr_last[0].getPath(), 'set_at', function (event) {
-            var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
-            $("#drawn_area_shape").val(JSON.stringify(feature[0]));
-            // the shape is updated by googleMaps, so no additional treatment is necessary here
-          });
-        }
-        if (gr_last[1] == 'circle') {
-          // on a changed or added/removed vertex (assumes only outerPath) for polygon shape
-          google.maps.event.addListener(gr_last[0], 'radius_changed', function (event) {
-            var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
-            $("#drawn_area_shape").val(JSON.stringify(feature[0]));
-          });
-          google.maps.event.addListener(gr_last[0], 'center_changed', function (event) {
-            var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
-            $("#drawn_area_shape").val(JSON.stringify(feature[0]));
-          });
-          // the shape is updated by googleMaps, so no additional treatment is necessary here
-        }
-        }
-      );
-
+      // google.maps.event.addListener(drawable_map[1], 'overlaycomplete', function (event) {
+      //     // Remove the last created shape if it exists.
+      //     if (gr_last != null) {
+      //       if (gr_last[0] != null) {
+      //         TW.vendor.lib.google.maps.draw.removeItemFromMap(gr_last[0]);
+      //       }
+      //     }
+      //     gr_last = [event.overlay, event.type];
+      //     var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+      //     $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+      //     // now that new shape is captured and has a postable feature, add a listener
+      //     if (gr_last[1] == 'polygon') {
+      //       // on a changed or added/removed vertex (assumes only outerPath) for polygon shape
+      //       google.maps.event.addListener(gr_last[0].getPath(), 'set_at', function (event) {
+      //         var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+      //         $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+      //         // the shape is updated by googleMaps, so no additional treatment is necessary here
+      //       });
+      //     }
+      //     if (gr_last[1] == 'circle') {
+      //       // on a changed or added/removed vertex (assumes only outerPath) for polygon shape
+      //       google.maps.event.addListener(gr_last[0], 'radius_changed', function (event) {
+      //         var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+      //         $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+      //       });
+      //       google.maps.event.addListener(gr_last[0], 'center_changed', function (event) {
+      //         var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+      //         $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+      //       });
+      //       // the shape is updated by googleMaps, so no additional treatment is necessary here
+      //     }
+      //   }
+      // );
+      TW.vendor.lib.google.maps.draw.singleDrawnFeatureToMapListeners(drawable_map, gr_last, "#drawn_area_shape")
     }
 
     function hideDrawableMap() {
