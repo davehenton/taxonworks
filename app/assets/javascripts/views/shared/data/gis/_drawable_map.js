@@ -27,12 +27,26 @@ _init_drawable_map = function init_drawable_map() {
         var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
           $("#drawn_area_shape").val(JSON.stringify(feature[0]));
           // now that new shape is captured and has a postable feature, add a listener
-          // on a changed or added/removed vertex (assumes only outerPath) for this shape
+        if (gr_last[1] == 'polygon') {
+          // on a changed or added/removed vertex (assumes only outerPath) for polygon shape
           google.maps.event.addListener(gr_last[0].getPath(), 'set_at', function (event) {
             var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
             $("#drawn_area_shape").val(JSON.stringify(feature[0]));
             // the shape is updated by googleMaps, so no additional treatment is necessary here
           });
+        }
+        if (gr_last[1] == 'circle') {
+          // on a changed or added/removed vertex (assumes only outerPath) for polygon shape
+          google.maps.event.addListener(gr_last[0], 'radius_changed', function (event) {
+            var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+            $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+          });
+          google.maps.event.addListener(gr_last[0], 'center_changed', function (event) {
+            var feature = TW.vendor.lib.google.maps.draw.buildFeatureCollectionFromShape(gr_last[0], gr_last[1]);
+            $("#drawn_area_shape").val(JSON.stringify(feature[0]));
+          });
+          // the shape is updated by googleMaps, so no additional treatment is necessary here
+        }
         }
       );
 
@@ -47,17 +61,17 @@ _init_drawable_map = function init_drawable_map() {
     }
 
     $("#toggle_slide_area").click(function (event) {
-      if($("#toggle_slide_area").is(':checked')) {          // switch to the map
+      if ($("#toggle_slide_area").is(':checked')) {          // switch to the map
         loadDrawableMap();
       }
       else {
         hideDrawableMap();
       }
-    });       
+    });
 
     $(".map_toggle").click(function (event) {           // switch to the map
       loadDrawableMap();
-    }); 
+    });
 
     $(".on_selector").click(function (event) {          // switch to the area by name selector
       hideDrawableMap();
