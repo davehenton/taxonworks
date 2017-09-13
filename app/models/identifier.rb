@@ -72,7 +72,7 @@ class Identifier < ApplicationRecord
     otu_utility:               Identifier::Local::OtuUtility,
     accession_code:            Identifier::Local::AccessionCode,
     unknown:                   Identifier::Unknown
-  }
+  }.freeze
 
   # Please DO NOT include the following:
   #   validates :identifier_object, presence: true
