@@ -28,8 +28,8 @@ class Identifier::Global < Identifier
   end
 
   def permit_only_one_global_without_relation_supplied_per_type
-    if identifier_object && identifier_object.identifiers.where(type:self.type.to_s).where.not(id: self.id ).any?
-      errors.add(:relation, " an existing identifier of type #{self.type} exists, a relation for this identifier must be provided") if self.relation.nil?
+    if identifier_object && identifier_object.identifiers.where(type: type.to_s).where.not(id: id ).any?
+      errors.add(:relation, " an existing identifier of type #{type} exists, a relation for this identifier must be provided") if self.relation.nil?
     end
   end
 
