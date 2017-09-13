@@ -219,6 +219,9 @@ class Descriptor::Gene < Descriptor
 
   protected
 
+  def set_cached
+  end
+
   def gene_attribute_logic_compresses
     if compress_logic.match?(/[^a-zA-Z\(\)\.\+]/)
       errors.add(:gene_attribute_logic, "is invalidly formed (likely a bad sequence_relationship_type)")
