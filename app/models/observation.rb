@@ -17,11 +17,16 @@ class Observation < ApplicationRecord
 
   validate :otu_or_collection_object_set
 
+  after_save :set_cached
+
   def self.human_name
     'YAY'
   end
 
   protected
+
+  def set_cached
+  end
 
   def otu_or_collection_object_set
     if otu_id.blank? && collection_object_id.blank? && otu.blank? && collection_object.blank?
