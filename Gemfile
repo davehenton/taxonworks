@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rack-cors', '~> 1.0.1', require: 'rack/cors'
 
-ruby '2.4.3'
+ruby '2.5.0'
 
 gem 'rake', '~> 12.0'
 gem 'rails', '~> 5.1.4'
@@ -24,7 +24,7 @@ gem 'rmagick', '~> 2.16'
 
 # Geo
 gem 'ffi-geos', '~> 1.2.0'
-# gem 'rgeo-shapefile', '~> 0.4.2'  # deprecated? not compatible- perhaps only used in 
+# gem 'rgeo-shapefile', '~> 0.4.2'  # deprecated? not compatible- perhaps only used in
 gem 'rgeo', '~> 1.0.0'
 gem 'rgeo-geojson', '~> 1.0.0'
 gem "rgeo-proj4"
