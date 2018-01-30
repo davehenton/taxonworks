@@ -13,7 +13,7 @@ engines:
       - ruby
       - javascript
   eslint:
-    enabled: true
+    enabled: false
     channel: "eslint-4"
   fixme:
     enabled: true
